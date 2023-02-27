@@ -75,19 +75,14 @@ Release-Name - Chart - Namespace - Value-Overrides (with files or direct inputs)
 ## Lens
 
 - Lens is basically a visualized version of kubectl
+- Kubectl is awesome! However, in reality we use it mostly for smaller debugging, ad-hoc deployments and quick status checks. Everything else is done via Lens.
+- Overview of different kubernetes resources - no details though
 - Show nginx deployment and later MariaDB statefulset 
-
-### Doings via Lens
-
-- Look at created resources
 - Create port-forwarding
 - Show secret
-- Difference between statefulset & deployment
-
-
-parametrize chart
-
-upgrade
+- Rescale nginx
+- Difference between statefulsets & deployments
+- Delete resources
 
 
 
