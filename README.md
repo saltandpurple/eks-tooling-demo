@@ -5,12 +5,16 @@
 ### Managed control plane
 - Basic Info
 - How to update
+Very reliable, have been using it extensively and never had any problems with control plane
+
 
 ### Integration with other AWS services
+Well integrated with the other AWS services. 
 - Compute/EC2
-- SecGroups + Network Interfaces ??
-- ECR
+- SecGroups + LBs + Network interfaces
 - IAM
+- ECR
+    - Repository Permissions integrated with IAM
 
 ## Kubectl ###
 Powerful, versatile, easy-to-use CLI. Provides extensive control of applications running on kubernetes as well as the cluster itself. 
