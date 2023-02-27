@@ -1,0 +1,15 @@
+### AWS EKS ###
+
+- Schnittstellen zu anderen AWS Services
+	- Compute/EC2
+	- SecGroups 
+	- Network Interfaces
+	- ECR
+	- IAM
+- Updates
+
+### Kubectl ###
+
+
+
+
