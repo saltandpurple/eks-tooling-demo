@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: mariadb
+spec:
+  selector:
+    matchLabels:
+      app: mariadb
+  serviceName: "mariadb"
+  replicas: {{ $.Values.statefulset.replicas }}
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      terminationGracePeriodSeconds: {{ $.Values.statefulset.terminationGracePeriod }}
+      containers:
+        - name: mariadb
+          image: {{ printf "%s:%s" .Values.statefulset.image.name .Values.statefulset.image.version }}
+          ports:
+            - containerPort: 3306
+              name: mysql
+          volumeMounts:
+            - name: mariadb-data
+              mountPath: /var/lib/mysql
+          envFrom:
+            - secretRef:
+                name: mariadb
+      volumes:
+        - name: mariadb-data
+          persistentVolumeClaim:
+            claimName: mariadb-data

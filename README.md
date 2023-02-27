@@ -13,6 +13,8 @@
 - IAM
 
 ## Kubectl ###
+Powerful, versatile, easy-to-use CLI. Provides extensive control of applications running on kubernetes as well as the cluster itself. 
+
 ### Setup .kubeconfig
 Copy kubeconfig from .kubeconfig directory to ~/.kube/config.
 Retrieve credentials via AWS EKS.
@@ -60,5 +62,32 @@ Retrieve credentials via AWS EKS.
 
 ## Helm
 
+### Print out manifest with variables filled in
+
+    helm template mariadb/ --debug -f helm/values.yaml
+
+### Install/upgrade helm release
+Release-Name - Chart - Namespace - Value-Overrides (with files or direct inputs) - Create NS if not exists - Install if not exists
+
+    helm upgrade mariadb mariadb/ -n mariadb -f helm/values.yaml --set secret.rootPassword={ROOT_PW} --create-namespace --install  
+
+
 ## Lens
+
+- Lens is basically a visualized version of kubectl
+- Show nginx deployment and later MariaDB statefulset 
+
+### Doings via Lens
+
+- Look at created resources
+- Create port-forwarding
+- Show secret
+- Difference between statefulset & deployment
+
+
+parametrize chart
+
+upgrade
+
+
 
