@@ -1,7 +1,6 @@
 # EKS + k8s-Tooling
 
-
-## Tools used in this guide - installation
+## Tools used in this guide
 
 ### awscli
 
@@ -153,12 +152,11 @@ There is much more depth to this, obviously. You can fully handle your cluster a
 
 ## Helm
 
-- Doesn't require anything to be installed in the cluster, just the tool on your local machine.
+- Doesn't require anything to be installed in the cluster, just the tool on your local machine
 - Is also based on kubectl - uses your existing kubeconfig
 - "Package manager for k8s"
 - We use it primarily for its excellent templating capabilities
 - Template + default-values + custom-values + inline-values = Deployable manifest(s)
-
 
 
 ### Printing out the resulting manifest with variables filled in
@@ -166,14 +164,21 @@ There is much more depth to this, obviously. You can fully handle your cluster a
     helm template mariadb/ --debug -f helm/values.yaml
 
 ### Installing/upgrading helm releases
-Release-Name - Chart - Namespace - Value-Overrides (with files or direct inputs) - Create NS if not exists - Install if not exists
+helm upgrade | Release-Name Chart | Namespace | Value-Overrides (with files or direct inputs) | Create NS if not exists | Install if not exists
 
     helm upgrade mariadb mariadb/ -n mariadb -f helm/values.yaml --set secret.rootPassword={ROOT_PW} --create-namespace --install  
+
+### Value hierarchy:
+Values are determined by looking at:
+- default values, specified in the chart-internal `values.yaml`
+- values specified via `-f` parameter from left to right
+- values specified via `--set` parameter from left to right
+- later values take precedence over earlier ones - the chart-internal values have the LOWEST priority, the last specified value on the CLI has the HIGHEST priority
 
 ### Rolling back/removing releases
 
     helm rollback mariadb -n mariadb   # Reverts release to previous version
-    helm uninstall mariadb -n mariadb  # Uninstalls release
+    helm uninstall mariadb -n mariadb  # Removes release
 
 ---
 
