@@ -1,7 +1,7 @@
 # EKS + k8s-Tooling
 
 
-## Tools - Install guides
+## Tools used in this guide - installation
 
 ### awscli
 
@@ -62,9 +62,50 @@ Add the following to your ~/.aws/config:
     role_session_name = k8s-workshop
 
 
-Now retrieve your kubeconfig via `awscli`.
+Now retrieve your kubeconfig via `awscli`. 
 
     aws eks update-kubeconfig --region eu-central-1 --name k8s-workshop --profile k8s-workshop
+
+The required config should be written directly to your ~/.kube/config. Check it:
+
+    cat ~/.kube/config
+
+It should look something like this:
+
+```
+apiVersion: v1
+clusters:
+- cluster:
+    certificate-authority-data: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMvakNDQWVhZ0F3SUJBZ0lCQURBTkJna3Foa2lHOXcwQkFRc0ZBREFWTVJNd0VRWURWUVFERXdwcmRXSmwKY201bGRHVnpNQjRYRFRJek1ESXlOekUxTURneU1Wb1hEVE16TURJeU5ERTFNRGd5TVZvd0ZURVRNQkVHQTFVRQpBeE1LYTNWaVpYSnVaWFJsY3pDQ0FTSXdEUVlKS29aSWh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBTjZ2ClU3dEEyRTFOa1IybTJFcUFhMzY0Vm5VeWJrRmpSalNrN3pxd2NzRmpmSG9WaUFVUzNVOThveTVvZmhmTjM0V2oKMStUb3pKelVKQjdUNFhjQWxmeDJ1ekYwV2tOczhDS3NHTlZFRDJWQWRROWN4KzZLQ01GVi9YM2VlVlpEZlV2aApMM2crTDA5OUE3RTFzMS9CdHYxTHZMYlZnc2hHcGl3YTNKT0k1WVIrNCtXWnZnYTZGNVdZS3MwQ2srbDNPcGZ6ClVaMXhKa3JKZXlwQlRFN0s5UERoSUlJc0tPNWpQYkNuUTBTclVodm9RUDMwekZoL3J6SlppWm93cWdyNGVpQnoKTnBlT0tIajc3YTE4dFlXMnJGSFRxNzFLcXZtNTNCQklsbXRpNjRBL0JXZFVHZ0QvOHVCRmsxclV4V21sN09zVApZOXNCOU5wTis4emhobUJCV2RFQ0F3RUFBYU5aTUZjd0RnWURWUjBQQVFIL0JBUURBZ0trTUE4R0ExVWRFd0VCCi93UUZNQU1CQWY4d0hRWURWUjBPQkJZRUZHL3NoZXIwUkc1S2ljTVZBT0c1eFpQNlFmSFFNQlVHQTFVZEVRUU8KTUF5Q0NtdDFZbVZ5Ym1WMFpYTXdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBTkpUVVVZVlY1MFV0c2s2aGQzdQp0SXFWWGJJU1RHOHQvNlZ1d0FtTEErWXBsNEdwVDIra0NnMVRndURhWm8wU0VMRmtEaVc0UWVmam5xNktlcWp0CkVpT28vWVF4eHR6R2M2S0w3NFlnMExoKzdkdEJUZGN4Qzc4SmxWZHZYMTVhTWpaRkZ3K0svKzRQNVNpcnlldjUKbUt2VG5WVzRBVms2WHJVR0xSdWxqZjdncnJlWE9tS1Zvb3Y5ME1VR3IweDc5SEZIV3BmUDI4dkphenNqdWdFcAplV293SVJqazVna2wxbnpWNndoVXd1ZkpibjY3QnUrREo0K0pPbHRmb1ViSWhMOVpZWkRwZThXL1dLRE1ZYVNxCnROUE51c3dtaXk5bWlrK04zUVpYb3FwcS9hbkdWSllwdUt4WCtGbmlZWWNaZ2ZBSHV3aFhHejlFbnVtOFJ1di8KSEFzPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+    server: https://DF4D5CD3063DA5115814ED0F43691268.gr7.eu-central-1.eks.amazonaws.com
+  name: k8s-workshop
+contexts:
+- context:
+    cluster: k8s-workshop
+    user: k8s-workshop
+  name: k8s-workshop
+currentContext: k8s-workshop
+kind: Config
+preferences: {}
+users:
+- name: k8s-workshop
+  user:
+    exec:
+      apiVersion: client.authentication.k8s.io/v1beta1
+      args:
+      - --region
+      - eu-central-1
+      - eks
+      - get-token
+      - --cluster-name
+      - k8s-workshop
+      command: aws
+      env:
+      - name: AWS_PROFILE
+        value: k8s-workshop
+      interactiveMode: IfAvailable
+      provideClusterInfo: false
+```
 
 That's it.
 
@@ -112,27 +153,40 @@ There is much more depth to this, obviously. You can fully handle your cluster a
 
 ## Helm
 
-### Print out manifest with variables filled in
+### TPs:
+- Doesn't require anything to be installed in the cluster, just the tool on your local machine.
+- Is also based on kubectl - uses your existing kubeconfig
+- 
+
+### Printing out the resulting manifest with variables filled in
 
     helm template mariadb/ --debug -f helm/values.yaml
 
-### Install/upgrade helm release
+### Installing/upgrading helm releases
 Release-Name - Chart - Namespace - Value-Overrides (with files or direct inputs) - Create NS if not exists - Install if not exists
 
     helm upgrade mariadb mariadb/ -n mariadb -f helm/values.yaml --set secret.rootPassword={ROOT_PW} --create-namespace --install  
+
+### Rolling back/removing releases
+
+    helm rollback mariadb -n mariadb   # Reverts release to previous version
+    helm uninstall mariadb -n mariadb  # Uninstalls release
 
 ---
 
 ## Lens
 
+### TPs:
 - Lens is basically a visualized version of kubectl
-- Kubectl is awesome! However, in reality we use it mostly for smaller debugging, ad-hoc deployments and quick status checks. Everything else is done via Lens.
-- Overview of different kubernetes resources - no details though
+- Kubectl is awesome! However, in reality we use it mostly for debugging, hacking and specialized lookups. Everything else is done via Lens, due to easy of use and clarity.
+- Displays all the standard k8s resources - nothing in the GUI is "Lens-exclusive"
+- Supports CRDs as well
 - Show nginx deployment and later MariaDB statefulset 
 - Create port-forwarding
+- Show PVC + LB and corresponding resources in AWS
 - Show secret
 - Rescale nginx
-- Difference between statefulsets & deployments
+- Explain difference between statefulsets & deployments
 - Delete resources
 
 ---
