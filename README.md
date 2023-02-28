@@ -166,7 +166,6 @@ That's it.
 
 There is much more depth to this, obviously. You can fully handle your cluster and all its resources with kubectl.
 
-
 ---
 
 ## Helm
@@ -197,9 +196,9 @@ There is much more depth to this, obviously. You can fully handle your cluster a
 
 
 ### Installing/upgrading helm releases
-helm upgrade | Release-Name Chart | Namespace | Value-Overrides (with files or direct inputs) | Create NS if not exists | Install if not exists
+helm install/upgrade | Release-Name Chart | Namespace | Value-Overrides (with files or direct inputs) | Create NS if not exists | Install if not exists
 
-    helm upgrade mariadb mariadb/ -n mariadb -f helm/dev-values.yaml --set secret.rootPassword=unsafePassword123 --create-namespace --install  
+    helm install/upgrade mariadb mariadb/ -n mariadb -f helm/dev-values.yaml --set secret.rootPassword=unsafePassword123 --create-namespace --install  
 
 ### Value hierarchy:
 Values are determined by looking at:
@@ -236,8 +235,6 @@ Values are determined by looking at:
 - Explain difference between statefulsets & deployments
 - Delete resources
 ```
-
-
 
 ---
 
