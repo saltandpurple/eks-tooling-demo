@@ -154,44 +154,59 @@ That's it.
 
 ### Creating and using port-forwardings
 
-	kubectl port-forward service/nginx -n nginx 8080:80 	# Create local port-forwarding to a service - Port specification is local:remote
+	kubectl port-forward service/nginx 8080:80 	# Create local port-forwarding to a service - Port specification is local:remote
 	curl localhost:8080					# If this requires an explanation, you're wrong here.
 
 ### You're going to use port-forwardings a LOT when debugging.
 
 ### Deleting objects
 
-	kubectl delete deployment nginx2 -n nginx	# Delete a resource by specifying it directly
 	kubectl delete -f nginx/nginx.yaml		# Delete resources via their manifest
+	kubectl delete deployment nginx2 -n nginx	# Delete a resource by specifying it directly
 
 There is much more depth to this, obviously. You can fully handle your cluster and all its resources with kubectl.
+
 
 ---
 
 ## Helm
 
-- Doesn't require anything to be installed in the cluster, just the tool on your local machine
-- Is also based on kubectl - uses your existing kubeconfig
 - "Package manager for k8s"
+- More like a release manager, versioning, rollbacks etc - on k8s level
+- Release can be any combination of manifests
 - We use it primarily for its excellent templating capabilities
+- In reality, most manifests are fairly complex but also contain a lot of elements already existent in other manifests
+- Chart = the central "unit" for helm
+  - basically a parametrized collection of k8s-manifests
 - Template + default-values + custom-values + inline-values = Deployable manifest(s)
+- Is also based on kubectl - uses your existing kubeconfig
+- Doesn't require anything to be installed in the cluster, just the tool on your local machine
 
+
+### Doings
+```
+- Take a look at the templates and explain a few different k8s concepts used
+- Statefulset vs. Deployment
+
+```
 
 ### Printing out the resulting manifest with variables filled in
 
-    helm template mariadb/ --debug -f helm/values.yaml
+    helm template mariadb/ --debug
+    helm template mariadb/ --debug -f helm/dev-values.yaml --set secret.rootPassword=unsafePassword123   # Override with file and inline value
+
 
 ### Installing/upgrading helm releases
 helm upgrade | Release-Name Chart | Namespace | Value-Overrides (with files or direct inputs) | Create NS if not exists | Install if not exists
 
-    helm upgrade mariadb mariadb/ -n mariadb -f helm/values.yaml --set secret.rootPassword={ROOT_PW} --create-namespace --install  
+    helm upgrade mariadb mariadb/ -n mariadb -f helm/dev-values.yaml --set secret.rootPassword=unsafePassword123 --create-namespace --install  
 
 ### Value hierarchy:
 Values are determined by looking at:
 - default values, specified in the chart-internal `values.yaml`
 - values specified via `-f` parameter from left to right
 - values specified via `--set` parameter from left to right
-- later values take precedence over earlier ones - the chart-internal values have the LOWEST priority, the last specified value on the CLI has the HIGHEST priority
+- later values take precedence over earlier ones - the chart-internal values have the LOWEST priority, the last specified value-(file) on the CLI has the HIGHEST priority
 
 ### Rolling back/removing releases
 
@@ -205,12 +220,14 @@ Values are determined by looking at:
 - Lens is basically a visualized version of kubectl
 - Kubectl is awesome! However, in reality we use it mostly for debugging, hacking and specialized lookups. Everything else is done via Lens, due to easy of use and clarity.
 - Displays all the standard k8s resources - nothing in the GUI is "Lens-exclusive"
+- Uses kubectl in background - therefore, no extra config is required
 - Supports CRDs as well
 
 ### Doings:
 ```
 - Provide overview
-- Show nginx deployment and later MariaDB statefulset 
+- Show nginx deployment - what we did with kubectl in Lens
+- Later: MariaDB statefulset with helm
 - Create port-forwarding and access db directly
 - Show PVC + LB and corresponding resources in AWS
 - Access nginx via Loadbalancer URL
@@ -219,6 +236,8 @@ Values are determined by looking at:
 - Explain difference between statefulsets & deployments
 - Delete resources
 ```
+
+
 
 ---
 

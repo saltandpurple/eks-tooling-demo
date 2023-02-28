@@ -16,7 +16,7 @@ spec:
       terminationGracePeriodSeconds: {{ $.Values.statefulset.terminationGracePeriod }}
       containers:
         - name: mariadb
-          image: {{ printf "%s:%s" .Values.statefulset.image.name .Values.statefulset.image.version }}
+          image: {{ printf "%s:%s" $.Values.statefulset.image.name $.Values.statefulset.image.version }}
           ports:
             - containerPort: 3306
               name: mysql
