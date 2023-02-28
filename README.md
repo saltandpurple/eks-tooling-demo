@@ -153,10 +153,13 @@ There is much more depth to this, obviously. You can fully handle your cluster a
 
 ## Helm
 
-### TPs:
 - Doesn't require anything to be installed in the cluster, just the tool on your local machine.
 - Is also based on kubectl - uses your existing kubeconfig
-- 
+- "Package manager for k8s"
+- We use it primarily for its excellent templating capabilities
+- Template + default-values + custom-values + inline-values = Deployable manifest(s)
+
+
 
 ### Printing out the resulting manifest with variables filled in
 
@@ -176,18 +179,23 @@ Release-Name - Chart - Namespace - Value-Overrides (with files or direct inputs)
 
 ## Lens
 
-### TPs:
 - Lens is basically a visualized version of kubectl
 - Kubectl is awesome! However, in reality we use it mostly for debugging, hacking and specialized lookups. Everything else is done via Lens, due to easy of use and clarity.
 - Displays all the standard k8s resources - nothing in the GUI is "Lens-exclusive"
 - Supports CRDs as well
+
+### Doings:
+```
+- Provide overview
 - Show nginx deployment and later MariaDB statefulset 
-- Create port-forwarding
+- Create port-forwarding and access db directly
 - Show PVC + LB and corresponding resources in AWS
+- Access nginx via Loadbalancer URL
 - Show secret
 - Rescale nginx
 - Explain difference between statefulsets & deployments
 - Delete resources
+```
 
 ---
 
