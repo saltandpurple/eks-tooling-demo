@@ -236,6 +236,6 @@ Values are determined by looking at:
 
 ---
 
-# Hacking
+## Hands-on / Hacking / everybody breaks stuff
 
 - Please make sure to use your own namespace (specified with the `-n` param ) to avoid conflicts!
