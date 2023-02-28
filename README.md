@@ -24,23 +24,26 @@
 ## AWS EKS ###
 
 ### Managed control plane
-- Basic Info
-- How to update
-Very reliable, have been using it extensively and never had any problems with control plane
 
-### Integration with other AWS services
-Well integrated with the other AWS services. 
-- Compute/EC2
-- SecGroups + LBs + Network interfaces
-- IAM
-  - Nodegroup Role + Cluster Role
-- ECR
-    - Repository Permissions integrated with IAM
+- Can be updated with a 'one-click-solution'. Very easy to use, exceedingly reliable.
+- EKS console shows k8s internals as well as related AWS resources.
+- Well integrated with the other AWS services. 
+  - Compute/EC2
+    - SecGroups, ENIs all work as expected
+  - Loadbalancers, EBS Volumes will be provisioned dynamically via integrated controllers/drivers
+    - Abstract resource (eg PersistentVolumeClaim, LoadBalancer) is created in k8s, the controller does the rest
+  - IAM
+    - Nodegroup Role + Cluster Role
+    - Permissions can be provided to individual workloads via ServiceAccount-Annotations or to all workloads via nodegroup role
+  - ECR
+      - Repository Permissions integrated with IAM
+      - All image repositories can be used, ECR is optional
 
 ---
 
 ## Kubectl ###
-Powerful, versatile, easy-to-use CLI. Provides extensive control of applications running on kubernetes as well as the cluster itself. 
+
+Powerful, versatile, easy-to-use CLI. Provides extensive control over resources running on kubernetes as well as the cluster itself. 
 
 ### Getting access to the cluster - setting up your kubeconfig
 
