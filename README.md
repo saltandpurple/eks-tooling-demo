@@ -186,7 +186,6 @@ There is much more depth to this, obviously. You can fully handle your cluster a
 ```
 - Take a look at the templates and explain a few different k8s concepts used
 - Statefulset vs. Deployment
-
 ```
 
 ### Printing out the resulting manifest with variables filled in
@@ -226,13 +225,12 @@ Values are determined by looking at:
 ```
 - Provide overview
 - Show nginx deployment - what we did with kubectl in Lens
-- Later: MariaDB statefulset with helm
+- Show MariaDB statefulset created with helm
 - Create port-forwarding and access db directly
 - Show PVC + LB and corresponding resources in AWS
 - Access nginx via Loadbalancer URL
 - Show secret
 - Rescale nginx
-- Explain difference between statefulsets & deployments
 - Delete resources
 ```
 
