@@ -20,7 +20,7 @@
 
 ---
 
-## AWS EKS ###
+## AWS EKS
 
 ### Managed control plane
 
