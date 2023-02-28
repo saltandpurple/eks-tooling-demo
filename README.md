@@ -1,10 +1,11 @@
 # EKS + k8s-Tooling
 
+
 ## Tools - Install guides
 
-### eksctl
+### awscli
 
-> https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html
+> https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
 
 ### kubectl
 
@@ -18,7 +19,7 @@
 
 > https://helm.sh/docs/intro/install/
 
-
+---
 
 ## AWS EKS ###
 
@@ -36,13 +37,33 @@ Well integrated with the other AWS services.
 - ECR
     - Repository Permissions integrated with IAM
 
+---
+
 ## Kubectl ###
 Powerful, versatile, easy-to-use CLI. Provides extensive control of applications running on kubernetes as well as the cluster itself. 
 
-### Setup .kubeconfig
-Copy kubeconfig from .kubeconfig directory to ~/.kube/config.
-Retrieve credentials via AWS EKS.
+### Getting access to the cluster - setting up your kubeconfig
 
+We will retrieve our kubeconfig directly from AWS EKS - therefore we setup access to AWS first:
+
+Add the following to your ~/.aws/config:
+
+    [profile nzc-k8s-profile]
+    region = eu-central-1
+    aws_access_key_id = ASK ME FOR THIS
+    aws_secret_access_key = ASK ME FOR THIS
+    
+    [profile k8s-workshop]
+    source_profile = nzc-k8s-profile
+    role_arn = arn:aws:iam::020746439882:role/eks-admin
+    role_session_name = k8s-workshop
+
+
+Now retrieve your kubeconfig via `awscli`.
+
+    aws eks update-kubeconfig --region eu-central-1 --name k8s-workshop --profile k8s-workshop
+
+That's it.
 
 ### Basic commands
 
@@ -82,7 +103,9 @@ Retrieve credentials via AWS EKS.
 	kubectl delete deployment nginx2 -n nginx	# Delete a resource by specifying it directly
 	kubectl delete -f nginx/nginx.yaml		# Delete resources via their manifest
 
-#### There is much more depth to this, obviously. You can fully handle your cluster and all its resources with kubectl.
+There is much more depth to this, obviously. You can fully handle your cluster and all its resources with kubectl.
+
+---
 
 ## Helm
 
@@ -95,6 +118,7 @@ Release-Name - Chart - Namespace - Value-Overrides (with files or direct inputs)
 
     helm upgrade mariadb mariadb/ -n mariadb -f helm/values.yaml --set secret.rootPassword={ROOT_PW} --create-namespace --install  
 
+---
 
 ## Lens
 
@@ -108,7 +132,8 @@ Release-Name - Chart - Namespace - Value-Overrides (with files or direct inputs)
 - Difference between statefulsets & deployments
 - Delete resources
 
+---
 
 # Hacking
 
-- Please use our own namespace!
+- Please make sure to use your own namespace (specified with the `-n` param ) to avoid conflicts!
