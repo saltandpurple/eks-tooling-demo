@@ -1,5 +1,25 @@
 # EKS + k8s-Tooling
 
+## Tools - Install guides
+
+### eksctl
+
+> https://docs.aws.amazon.com/eks/latest/userguide/eksctl.html
+
+### kubectl
+
+> https://docs.aws.amazon.com/eks/latest/userguide/install-kubectl.html
+
+### Lens
+
+> https://docs.k8slens.dev/getting-started/install-lens/
+
+### helm
+
+> https://helm.sh/docs/intro/install/
+
+
+
 ## AWS EKS ###
 
 ### Managed control plane
@@ -7,12 +27,12 @@
 - How to update
 Very reliable, have been using it extensively and never had any problems with control plane
 
-
 ### Integration with other AWS services
 Well integrated with the other AWS services. 
 - Compute/EC2
 - SecGroups + LBs + Network interfaces
 - IAM
+  - Nodegroup Role + Cluster Role
 - ECR
     - Repository Permissions integrated with IAM
 
@@ -89,4 +109,6 @@ Release-Name - Chart - Namespace - Value-Overrides (with files or direct inputs)
 - Delete resources
 
 
+# Hacking
 
+- Please use our own namespace!

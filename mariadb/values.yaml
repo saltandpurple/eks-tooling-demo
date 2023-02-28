@@ -9,5 +9,5 @@ statefulset:
     version: "10.11"
 
 persistence:
-  storageClass: gp3 # TODO: does this exist in the cluster?
+  storageClass: gp2
   volumeSize: 30G
