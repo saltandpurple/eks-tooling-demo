@@ -1,6 +1,6 @@
 # EKS + k8s-Tooling
 
-## Tools used in this guide
+## Tools used in this workshop
 
 ### awscli
 
@@ -26,29 +26,32 @@
 
 - Can be updated with a 'one-click-solution'. Very easy to use, exceedingly reliable.
 - EKS console shows k8s internals as well as related AWS resources.
+- EKS provides managed ha control plane as essential service.
 - Well integrated with the other AWS services. 
   - Compute/EC2
-    - SecGroups, ENIs all work as expected
-  - Loadbalancers, EBS Volumes will be provisioned dynamically via integrated controllers/drivers
-    - Abstract resource (eg PersistentVolumeClaim, LoadBalancer) is created in k8s, the controller does the rest
+    - SecGroups, ENIs all work as expected.
+  - Loadbalancers, EBS Volumes will be provisioned dynamically via integrated controllers/drivers.
+    - Abstract resource (eg PersistentVolumeClaim, LoadBalancer) is created in k8s, the driver/controller does the rest.
   - IAM
     - Nodegroup Role + Cluster Role
-    - Permissions can be provided to individual workloads via ServiceAccount-Annotations or to all workloads via nodegroup role
+    - Permissions can be provided to individual workloads via ServiceAccount-Annotations or to all workloads via nodegroup role.
   - ECR
-      - Repository Permissions integrated with IAM
-      - All image repositories can be used, ECR is optional
-
+    - Repository Permissions integrated with IAM
+    - All image repositories can be used, ECR is optional.
+  - Vendor lock-in: partial problem, AWS-specified annotations etc are not portable, the rest is (if you make use of IaC).
+  - Barely used in daily business, except for updates and nodegroup adjustments. Everything else is done with the tools below.
 ---
 
 ## Kubectl ###
 
-Powerful, versatile, easy-to-use CLI. Provides extensive control over resources running on kubernetes as well as the cluster itself. 
+- Powerful, versatile, easy-to-use CLI. Provides extensive control over resources running on kubernetes as well as the cluster itself. 
+- Like most shells, it's accessible on different levels: basic commands are easy and abundant. (Much) More complex operations are equally possible but it quickly becomes hard to read/write.
 
 ### Getting access to the cluster - setting up your kubeconfig
 
 We will retrieve our kubeconfig directly from AWS EKS - therefore we setup access to AWS first:
 
-Add the following to your ~/.aws/config:
+Add the following to your ~/.aws/config (don't forget to add the actual credentials!):
 
     [profile nzc-k8s-profile]
     region = eu-central-1
@@ -114,19 +117,32 @@ That's it.
 
 	kubectl config get-contexts		# Show all available contexts
 	kubectl config current-context		# Show currently active context
-	kubectl config use-context heimspiel	# Switch context to heimspiel
+	kubectl config use-context k8s-workshop	# Switch context to heimspiel
+
+### Checking permissions
+
+    kubectl auth can-i --list                                # Get an overview of all permissions for my user
+    kubectl auth can-i get pods --as=serviceaccount:default  # Check for permissibility of a specific action (and a different user/sa than myself)
+
+### RBAC related checks can be easily performed with kubectl.
+
 
 ### Creating objects
 
-	kubectl create namespace nginx					# Create a namespace 
-	kubectl apply -f nginx/nginx.yaml -n nginx			# Apply a given manifest in the namespace heimspiel-nginx
-	kubectl create deployment nginx2 -n nginx --image=nginx:latest	# Shortcut to create a deployment without a manifest
+	kubectl create namespace nginx					# Create a namespace
+    kubectl get namespaces                                          # Check that is has been created
+    kubectl config set-context --current --namespace=nginx  # Set namespace to nginx for less typing
+	kubectl apply -f nginx/nginx.yaml			# Apply a given manifest in the namespace heimspiel-nginx
+	kubectl create deployment nginx2 -n nginx2 --image=nginx:latest	# Shortcut to create a deployment without a manifest (namespace must exist)
+
+### In k8s, namespaces are a central mechanism for separation of concerns.
+
 
 ### Describing objects
 
 	kubectl get pods --all-namespaces		# List pods in all namespaces
-	kubectl get pods -n nginx -o wide		# List pods in a certain namespace but with more output
-	kubectl describe deployment nginx -n nginx	# Get a detailed description of an object
+	kubectl get pods -o wide		# List pods in a certain namespace but with more output
+	kubectl describe service nginx	# Get a detailed description of an object
 
 ### Scaling a deployment
 
@@ -140,6 +156,8 @@ That's it.
 
 	kubectl port-forward service/nginx -n nginx 8080:80 	# Create local port-forwarding to a service - Port specification is local:remote
 	curl localhost:8080					# If this requires an explanation, you're wrong here.
+
+### You're going to use port-forwardings a LOT when debugging.
 
 ### Deleting objects
 
