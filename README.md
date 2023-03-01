@@ -22,8 +22,8 @@
 
 ## AWS EKS
 
-### Managed control plane
 
+- Basically a managed control plane
 - EKS console shows k8s internals as well as related AWS resources.
 - EKS provides managed ha control plane as essential service.
 - Well integrated with the other AWS services. 
