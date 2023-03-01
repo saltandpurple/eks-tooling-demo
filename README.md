@@ -24,7 +24,6 @@
 
 ### Managed control plane
 
-- Can be updated with a 'one-click-solution'. Very easy to use, exceedingly reliable.
 - EKS console shows k8s internals as well as related AWS resources.
 - EKS provides managed ha control plane as essential service.
 - Well integrated with the other AWS services. 
@@ -39,7 +38,8 @@
     - Repository Permissions integrated with IAM
     - All image repositories can be used, ECR is optional.
   - Vendor lock-in: partial problem, AWS-specified annotations etc are not portable, the rest is (if you make use of IaC).
-  - Barely used in daily business, except for updates and nodegroup adjustments. Everything else is done with the tools below.
+- Barely used in daily business, except for updates and nodegroup adjustments. Everything else is done with the tools below.
+- Can be updated with a 'one-click-solution'. Very easy to use, exceedingly reliable.
 ---
 
 ## Kubectl ###
@@ -179,7 +179,7 @@ There is much more depth to this, obviously. You can fully handle your cluster a
   - basically a parametrized collection of k8s-manifests
 - Template + default-values + custom-values + inline-values = Deployable manifest(s)
 - Is also based on kubectl - uses your existing kubeconfig
-- Doesn't require anything to be installed in the cluster, just the tool on your local machine
+- Doesn't require anything to be installed in the cluster, just the tool on your local machinew
 
 
 ### Doings
